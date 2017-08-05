@@ -1,0 +1,64 @@
+﻿@model ADO_CRUD.ViewModels.Employee.Details
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Employee</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.employee.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.employee.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.employee.LastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.employee.LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.employee.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.employee.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.employee.City)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.employee.City)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.employee.Address)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.employee.Address)
+        </dd>
+
+    </dl>
+    <ul>
+        <text>Tasks</text>
+        @foreach (var task in Model.tasks) {
+            <li>@task.Title</li>
+        }
+    </ul>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.employee.EmployeeId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
