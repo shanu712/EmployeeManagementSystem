@@ -21,31 +21,13 @@ namespace ADO_CRUD.Controllers
         }
 
         // GET: Employee/Details/5
-        public ActionResult Details(int id)
-        {
+        public ActionResult Details(int id) {
+            EmployeeRepository employeeRepository = new EmployeeRepository();
+            TaskRepository taskRepository = new TaskRepository();
+
             ViewModels.Employee.Details model = new ViewModels.Employee.Details();
-            using (var conn = new SQLiteConnection(@"Data Source=D:Projects\MyDB.s3db")) {
-                conn.Open();
-                using (var cmd = new SQLiteCommand(conn)) {
-                    cmd.CommandText = "select * from Employees where EmployeeId=" + id.ToString();
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read()) {
-                            model.employee.FirstName = (string)reader["FirstName"];
-                            model.employee.LastName = (string)reader["LastName"];
-                            model.employee.Email = (string)reader["Email"];
-                            model.employee.City = (string)reader["City"];
-                            model.employee.Address = (string)reader["Address"];
-                        }
-                    }
-                    cmd.CommandText = "select * from Tasks where EmployeeId=" + id.ToString();
-                    using (var reader = cmd.ExecuteReader()) {
-                        while (reader.Read()) {
-                            model.tasks.Add(new Task { Title = Convert.ToString(reader["Title"]), TaskId = Convert.ToInt32(reader["TaskId"]), EmployeeId = id });
-                        }
-                    }
-                }
-            };
+            model.employee = employeeRepository.GetById(id);
+            model.tasks = taskRepository.GetTasksForEmployee(id);
             return View(model);
         }
 
@@ -64,16 +46,18 @@ namespace ADO_CRUD.Controllers
 
         // POST: Employee/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Employee employee)
         {
             try
             {
-                // TODO: Add insert logic here
+                EmployeeRepository employeeRepository = new EmployeeRepository();
+                employeeRepository.Insert(employee);
 
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
+                ViewBag.ErrorMessage = ex.Message;
                 return View();
             }
         }

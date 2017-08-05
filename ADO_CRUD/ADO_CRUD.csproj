@@ -171,10 +171,11 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\EmployeeRepository.cs" />
-    <Compile Include="Helpers\IQueryable.cs" />
+    <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\ServerSettings.cs" />
+    <Compile Include="Helpers\SQLiteDbObject.cs" />
+    <Compile Include="Helpers\TaskRepository.cs" />
     <Compile Include="Models\Employee.cs" />
-    <Compile Include="Models\SQLiteDbObject.cs" />
     <Compile Include="Models\Task.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\Employee\Details.cs" />

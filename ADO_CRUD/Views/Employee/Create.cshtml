@@ -5,7 +5,9 @@
 }
 
 <h2>Create</h2>
-
+@if (ViewBag.ErrorMessage != null) {
+    @ShowErrorMessage(ViewBag.ErrorMessage);
+}
 
 @using (Html.BeginForm()) 
 {
@@ -70,3 +72,10 @@
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+
+@helper ShowErrorMessage(string message) {
+    <div class="alert alert-danger" role="alert">
+        <strong>God Damn!</strong>@message
+    </div>
+}
