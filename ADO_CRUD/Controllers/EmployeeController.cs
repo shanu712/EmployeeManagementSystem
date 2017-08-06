@@ -34,13 +34,6 @@ namespace ADO_CRUD.Controllers
         // GET: Employee/Create
         public ActionResult Create()
         {
-            Employee obj = new Employee {
-                FirstName = "fname",
-                LastName = "lname",
-                City = "cityfuckinf",
-                Address = "addressfucking"
-            };
-            obj.AddToDatabase();
             return View();
         }
 
@@ -65,16 +58,20 @@ namespace ADO_CRUD.Controllers
         // GET: Employee/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            Employee employee = new Employee();
+            EmployeeRepository employeeRepository = new EmployeeRepository();
+            employee = employeeRepository.GetById(id);
+            return View(employee);
         }
 
         // POST: Employee/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(int id, Employee employee)
         {
             try
             {
-                // TODO: Add update logic here
+                EmployeeRepository employeeRepository = new EmployeeRepository();
+                employeeRepository.Update(employee);
 
                 return RedirectToAction("Index");
             }
@@ -100,7 +97,7 @@ namespace ADO_CRUD.Controllers
             {
                 // TODO: Add delete logic here
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Employee", new { id = 5 } );
             }
             catch
             {

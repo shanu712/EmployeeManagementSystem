@@ -11,5 +11,6 @@ namespace ADO_CRUD.Helpers {
 
     public class EmployeeRepository : SQLiteDbObject<Employee> {
 
+
     }
 }

@@ -8,8 +8,47 @@ using System.Web;
 
 namespace ADO_CRUD.Helpers {
     public abstract class SQLiteDbObject<T> where T : new() {
+
+        public void Update(T obj) {
+            string tableName = typeof(T).Name.ToString() + "s";
+            string query = "UPDATE " + tableName + " SET ";
+
+            List<PropertyInfo> properties = typeof(T).GetProperties().ToList();
+            // Get an Id of object before the list is сut
+            string objId = properties[0].GetValue(obj).ToString();
+            // Excepting `ID` fields, because its set to autoincrement
+            properties = properties.Slice(1, properties.Count);
+
+            // Get the values of those properties
+            List<string> values = properties
+                                  .Select(x => x.GetValue(obj).ToString())
+                                  .ToList();
+
+            List<string> names = properties
+                        .Select(x => x.Name)
+                        .ToList();
+
+            for (int i = 0; i < properties.Count; i++) {
+                query += names[i] + " = '" + values[i] + "'";
+                
+                if (i != names.Count - 1) {
+                    query += ",";
+                }
+            }
+            tableName = tableName.Substring(0, tableName.Length - 1);
+            query += " WHERE " + tableName + "Id = " + objId;
+            
+            using (var conn = new SQLiteConnection(@"Data Source=D:Projects\MyDB.s3db")) {
+                conn.Open();
+                using (var cmd = new SQLiteCommand(conn)) {
+                    cmd.CommandText = query;
+                    cmd.ExecuteNonQuery();
+                }
+            };
+        }
+
         public void Insert(T obj) {
-            string tableName = typeof(T).Name.ToString() + "s ";
+            string tableName = typeof(T).Name.ToString() + "s";
             string left = "INSERT INTO " + tableName + " (";
             string right = "VALUES (";
             
